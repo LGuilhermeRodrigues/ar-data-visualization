@@ -6,6 +6,7 @@ All Rights Reserved.
 Confidential and Proprietary - Protected under copyright and other laws.
 ==============================================================================*/
 
+using MyNameSpace;
 using UnityEngine;
 using Vuforia;
 
@@ -55,9 +56,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         m_PreviousStatus = previousStatus;
         m_NewStatus = newStatus;
         
-        Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + 
+        /*Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + 
                   " " + mTrackableBehaviour.CurrentStatus +
-                  " -- " + mTrackableBehaviour.CurrentStatusInfo);
+                  " -- " + mTrackableBehaviour.CurrentStatusInfo);*/
 
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
             newStatus == TrackableBehaviour.Status.TRACKED ||
@@ -90,7 +91,13 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             var rendererComponents = mTrackableBehaviour.GetComponentsInChildren<Renderer>(true);
             var colliderComponents = mTrackableBehaviour.GetComponentsInChildren<Collider>(true);
             var canvasComponents = mTrackableBehaviour.GetComponentsInChildren<Canvas>(true);
-
+            /*GameObject[] gameObjects = mTrackableBehaviour.GetComponentsInChildren<GameObject>(true);
+            foreach (GameObject gameObject in gameObjects)
+            {
+                //MarkerTrackedScript markerScript = gameObject.GetComponent<MarkerTrackedScript>();
+                Debug.Log("Hello there from eventHandler");
+            }*/
+                        
             // Enable rendering:
             foreach (var component in rendererComponents)
                 component.enabled = true;
@@ -102,6 +109,13 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             // Enable canvas':
             foreach (var component in canvasComponents)
                 component.enabled = true;
+
+            Debug.Log("Hello there from OnTrackingFound - ");
+
+            var markerScript = mTrackableBehaviour.GetComponentInChildren<MarkerTrackedScript>(true);
+
+            markerScript.Start();
+
         }
     }
 
