@@ -7,6 +7,7 @@ Confidential and Proprietary - Protected under copyright and other laws.
 ==============================================================================*/
 
 using MyNameSpace;
+using System;
 using UnityEngine;
 using Vuforia;
 
@@ -91,12 +92,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             var rendererComponents = mTrackableBehaviour.GetComponentsInChildren<Renderer>(true);
             var colliderComponents = mTrackableBehaviour.GetComponentsInChildren<Collider>(true);
             var canvasComponents = mTrackableBehaviour.GetComponentsInChildren<Canvas>(true);
-            /*GameObject[] gameObjects = mTrackableBehaviour.GetComponentsInChildren<GameObject>(true);
-            foreach (GameObject gameObject in gameObjects)
-            {
-                //MarkerTrackedScript markerScript = gameObject.GetComponent<MarkerTrackedScript>();
-                Debug.Log("Hello there from eventHandler");
-            }*/
                         
             // Enable rendering:
             foreach (var component in rendererComponents)
@@ -110,11 +105,17 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             foreach (var component in canvasComponents)
                 component.enabled = true;
 
-            Debug.Log("Hello there from OnTrackingFound - ");
+            if (string.Equals(mTrackableBehaviour.TrackableName,"rock-star"))
+            {
+                Debug.Log("Interaction Marker Detected");
+            }
+            else
+            {
+                Debug.Log("Calling MarkerTrackedScript");
+                var markerScript = mTrackableBehaviour.GetComponentInChildren<ChartLoadScript>(true);
+                markerScript.Start(mTrackableBehaviour.TrackableName);
+            }
 
-            var markerScript = mTrackableBehaviour.GetComponentInChildren<MarkerTrackedScript>(true);
-
-            markerScript.Start();
 
         }
     }

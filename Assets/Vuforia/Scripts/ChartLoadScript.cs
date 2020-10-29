@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MyNameSpace {
 
-    public class MarkerTrackedScript : MonoBehaviour
+    public class ChartLoadScript : MonoBehaviour
     {
 
-        private int dataQuery;
+        private string chartName;
+
+        private string datasource;
+
+        private string[] metrics;
+
+        private string[] dimensions;
 
         // Start is called before the first frame update
-        public void Start()
+        public void Start(string imageTargetName)
         {
-            Debug.Log("Hello there from the MarkerTrackedScript");
             int[] data = { 1, 2, 3, 5, 5, 6, 3, 1 };
         }
 
