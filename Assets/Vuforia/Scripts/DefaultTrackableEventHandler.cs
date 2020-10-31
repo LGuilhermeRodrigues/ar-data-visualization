@@ -108,12 +108,14 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             if (string.Equals(mTrackableBehaviour.TrackableName,"rock-star"))
             {
                 Debug.Log("Interaction Marker Detected");
+                //var markerScript = mTrackableBehaviour.GetComponentInChildren<ChartLoadScript>(true);
+                //markerScript.Load(mTrackableBehaviour.TrackableName);
             }
             else
             {
                 Debug.Log("Calling MarkerTrackedScript");
                 var markerScript = mTrackableBehaviour.GetComponentInChildren<ChartLoadScript>(true);
-                markerScript.Start(mTrackableBehaviour.TrackableName);
+                markerScript.Load(mTrackableBehaviour.TrackableName);
             }
 
 
