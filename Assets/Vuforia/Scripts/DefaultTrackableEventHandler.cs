@@ -105,15 +105,13 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             foreach (var component in canvasComponents)
                 component.enabled = true;
 
-            if (string.Equals(mTrackableBehaviour.TrackableName,"rock-star"))
+            if (string.Equals(mTrackableBehaviour.TrackableName,"stone"))
             {
                 Debug.Log("Interaction Marker Detected");
-                //var markerScript = mTrackableBehaviour.GetComponentInChildren<ChartLoadScript>(true);
-                //markerScript.Load(mTrackableBehaviour.TrackableName);
             }
             else
             {
-                Debug.Log("Calling MarkerTrackedScript");
+                Debug.Log("Calling Marker Script");
                 var markerScript = mTrackableBehaviour.GetComponentInChildren<ChartLoadScript>(true);
                 markerScript.Load(mTrackableBehaviour.TrackableName);
             }
