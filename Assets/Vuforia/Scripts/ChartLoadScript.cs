@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DatasetSpace;
+using System.Linq;
+using RenderSpace;
+
 namespace MyNameSpace {
 
     public class ChartLoadScript : MonoBehaviour
@@ -37,6 +41,11 @@ namespace MyNameSpace {
 
                 bool somethingMissing = false;
 
+                PlayerPrefs.SetString(imageTargetName + "_chartName", "Bars");
+                PlayerPrefs.SetString(imageTargetName + "_datasource", "homes.csv");
+                chartName = "Bars";
+                datasource = "homes.csv";
+
                 string[] keys = { imageTargetName+"_chartName", imageTargetName + "_datasource"};
 
                 foreach (string k in keys)
@@ -47,6 +56,7 @@ namespace MyNameSpace {
                     }
                 }
 
+                // Choose the Tipe of the Chart and The Table
                 if (somethingMissing)
                 {
                     //showOptions(imageTargetName, somethingMissing);
@@ -56,9 +66,7 @@ namespace MyNameSpace {
                     //renderChart();
                 }
 
-                datasource = "homes.csv";
-
-                chartName = "Bars";
+                
 
                 if (string.Equals(chartName, "Bars"))
                 {
@@ -69,17 +77,17 @@ namespace MyNameSpace {
 
                 for (int i = 0; i < metricNum; i++)
                 {
-
                     // check misssing
                     metrics.Add("metric"+i, "Sell");
                 }
                 for (int i = 0; i < dimNum; i++)
                 {
-                    dims.Add("dim" + i, "\"Beds\"");
+                    dims.Add("dim" + i, "Beds");
                 }
 
                 if (somethingMissing)
                 {
+                    Debug.Log("Somethin is missing on chart");
                     //showOptions(imageTargetName, somethingMissing);
                 }
                 else
@@ -87,7 +95,7 @@ namespace MyNameSpace {
                     renderChart(datasource,chartName,metrics,dims);
                 }
                 int[] data = { 1, 2, 3, 5, 5, 6, 3, 1 };
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 0; i++)
                 {
 
                     GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -95,27 +103,26 @@ namespace MyNameSpace {
                     gameObject.transform.position = parentObject.transform.position;
                     gameObject.transform.position = new Vector3(gameObject.transform.position.x + i * 0.02f, gameObject.transform.position.y, gameObject.transform.position.z + i * 0.02f);
                     gameObject.transform.rotation = this.gameObject.transform.rotation;
-                    //gameObject.transform.localScale = this.gameObject.transform.localScale;
+                    gameObject.transform.localScale = this.gameObject.transform.localScale;
                 }
             } 
         }
 
         private void renderChart(string datasource, string chartName, IDictionary<string, string> metrics, IDictionary<string, string> dims)
         {
+            Debug.Log("Datasource="+datasource);
+            var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
+
+            var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
+
             if (string.Equals(chartName, "Bars"))
             {
-                var m = extractValues(datasource, dims["dim0"]);
-                var d = extractValues(datasource, metrics["metric0"]);
-                //renderBars();
+
+                var list1 = datasetScript.GetLines(datasource, dims["dim0"]);
+                //var d = extractValues(datasource, metrics["metric0"]);
+                var list2 = datasetScript.GetLines(datasource, metrics["metric0"]);
+                renderScript.renderBars(parentObject,list1, list2);
             }
-        }
-
-        private double[] extractValues(string datasource, string col)
-        {
-            double[] data = { 0, 1, 2, 3 };
-
-
-            return data;
         }
 
         private void showOptions(string imageTargetName, bool somethingMissing)
