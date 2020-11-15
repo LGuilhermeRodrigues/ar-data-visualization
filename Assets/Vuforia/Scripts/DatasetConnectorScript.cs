@@ -19,12 +19,12 @@ namespace DatasetSpace
             bool firstLine = true;
             int index = 0;
             var numbers = new List<string>();
-            using (var reader = new StreamReader("Assets\\Tables\\"+tableName))
+            using (var reader = new StreamReader("Assets\\Tables\\" + tableName))
             {
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    
+
                     // do something with line... could even do a yield here if you're reading a large file
                     if (firstLine)
                     {
@@ -47,6 +47,15 @@ namespace DatasetSpace
 
             return numbers;
             //Debug.Log("numbers="+ numbers.ToString());
+        }
+
+        public List<string> GetSchema(string tableName)
+        {
+            using (var reader = new StreamReader("Assets\\Tables\\" + tableName))
+            {
+                var line = reader.ReadLine();
+                return new List<string>(line.Split(","[0]));
+            }
         }
     }
 }

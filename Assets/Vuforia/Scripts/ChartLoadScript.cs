@@ -80,30 +80,28 @@ namespace MyNameSpace {
                     // check misssing
                     metrics.Add("metric"+i, "Sell");
                 }
+                string dimNeeded;
                 for (int i = 0; i < dimNum; i++)
                 {
-                    dims.Add("dim" + i, "Beds");
+                    dimNeeded = imageTargetName + "_dim" + i;
+                    if (!PlayerPrefs.HasKey(dimNeeded))
+                    {
+                        somethingMissing = true;
+                    }
+                    //dims.Add("dim" + i, "Beds");
                 }
 
                 if (somethingMissing)
                 {
                     Debug.Log("Somethin is missing on chart");
                     //showOptions(imageTargetName, somethingMissing);
+                    var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
+                    var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
+                    renderScript.renderChoice(parentObject, datasetScript.GetSchema(datasource));
                 }
                 else
                 {
                     renderChart(datasource,chartName,metrics,dims);
-                }
-                int[] data = { 1, 2, 3, 5, 5, 6, 3, 1 };
-                for (int i = 0; i < 0; i++)
-                {
-
-                    GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-                    gameObject.transform.parent = parentObject.transform;
-                    gameObject.transform.position = parentObject.transform.position;
-                    gameObject.transform.position = new Vector3(gameObject.transform.position.x + i * 0.02f, gameObject.transform.position.y, gameObject.transform.position.z + i * 0.02f);
-                    gameObject.transform.rotation = this.gameObject.transform.rotation;
-                    gameObject.transform.localScale = this.gameObject.transform.localScale;
                 }
             } 
         }
