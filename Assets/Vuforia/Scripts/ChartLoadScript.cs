@@ -30,7 +30,7 @@ namespace MyNameSpace {
 
         private string[] dimensions;
 
-        private bool isLoaded = false;
+        public bool isLoaded = false;
 
         // Start is called before the first frame update
         public void Load(string imageTargetName)
@@ -41,10 +41,10 @@ namespace MyNameSpace {
 
                 bool somethingMissing = false;
 
-                PlayerPrefs.SetString(imageTargetName + "_chartName", "Bars");
-                PlayerPrefs.SetString(imageTargetName + "_datasource", "homes.csv");
                 chartName = "Bars";
                 datasource = "homes.csv";
+                PlayerPrefs.SetString(imageTargetName + "_chartName", chartName);
+                PlayerPrefs.SetString(imageTargetName + "_datasource", datasource);
 
                 string[] keys = { imageTargetName+"_chartName", imageTargetName + "_datasource"};
 
@@ -71,7 +71,6 @@ namespace MyNameSpace {
                 if (string.Equals(chartName, "Bars"))
                 {
                     metricNum = 1;
-
                     dimNum = 1;
                 }
 
@@ -80,6 +79,7 @@ namespace MyNameSpace {
                     // check misssing
                     metrics.Add("metric"+i, "Sell");
                 }
+
                 string dimNeeded;
                 for (int i = 0; i < dimNum; i++)
                 {
@@ -87,6 +87,18 @@ namespace MyNameSpace {
                     if (!PlayerPrefs.HasKey(dimNeeded))
                     {
                         somethingMissing = true;
+                        Debug.Log("_dim " + i+" is missing on chart");
+                        var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
+                        var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
+                        List<string> dimNames = datasetScript.GetSchema(datasource);
+                        List<string> storedNames = dimNames
+                            .Select(t => imageTargetName + "_dim" + i + ":" + t).ToList();
+
+                        renderScript.renderChoice(parentObject, storedNames);
+                    }else
+                    {
+                        Debug.Log("PlayerPrefs found  "+imageTargetName+"_dim " + i + " is "+ PlayerPrefs.GetString(dimNeeded));
+                        dims.Add("dim" + i,PlayerPrefs.GetString(dimNeeded));
                     }
                     //dims.Add("dim" + i, "Beds");
                 }
@@ -95,9 +107,7 @@ namespace MyNameSpace {
                 {
                     Debug.Log("Somethin is missing on chart");
                     //showOptions(imageTargetName, somethingMissing);
-                    var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
-                    var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
-                    renderScript.renderChoice(parentObject, datasetScript.GetSchema(datasource));
+                    
                 }
                 else
                 {

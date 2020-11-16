@@ -9,6 +9,8 @@ namespace DatasetSpace
     public class DatasetConnectorScript : MonoBehaviour
     {
 
+        
+
         void GetTables()
         {
             Debug.Log("oioioioiosi");
@@ -19,7 +21,8 @@ namespace DatasetSpace
             bool firstLine = true;
             int index = 0;
             var numbers = new List<string>();
-            using (var reader = new StreamReader("Assets\\Tables\\" + tableName))
+            Uri uri = new Uri(Path.Combine(Application.streamingAssetsPath, tableName));
+            using (var reader = new StreamReader(uri.AbsolutePath))
             {
                 while (!reader.EndOfStream)
                 {
@@ -51,11 +54,9 @@ namespace DatasetSpace
 
         public List<string> GetSchema(string tableName)
         {
-            using (var reader = new StreamReader("Assets\\Tables\\" + tableName))
-            {
-                var line = reader.ReadLine();
-                return new List<string>(line.Split(","[0]));
-            }
+            var textFile = Resources.Load<TextAsset>("homes");
+            var lines = textFile.text.Split("\n"[0]); 
+            return new List<string>(lines[0].Split(","[0]));
         }
     }
 }

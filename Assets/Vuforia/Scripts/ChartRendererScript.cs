@@ -44,6 +44,9 @@ namespace RenderSpace
 
         public void renderChoice(GameObject parent, List<string> list1)
         {
+            //list1 = new List<string>();
+            //list1.Add("oi");
+            //list1.Add("ooi");
             List<string> uniqueValues = list1.Distinct().ToList();
             float xStepSize = rangeX / uniqueValues.Count;
             float xStart = 0 - rangeX / 2;
@@ -59,7 +62,7 @@ namespace RenderSpace
                 GameObject dimName = new GameObject(uniqueValues[i]+"_label");
                 dimName.transform.parent = parent.transform;
                 TextMesh text = dimName.AddComponent<TextMesh>();
-                text.text = uniqueValues[i];
+                text.text = uniqueValues[i].Split(":"[0])[1];
                 text.anchor = TextAnchor.MiddleCenter;
                 //MeshRenderer mesh = dimName.AddComponent<MeshRenderer>();
                 dimName.transform.rotation = parent.transform.rotation;
