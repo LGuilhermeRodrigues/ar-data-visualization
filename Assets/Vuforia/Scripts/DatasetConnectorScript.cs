@@ -38,11 +38,15 @@ namespace DatasetSpace
                 }
                 else
                 {
-                    Debug.Log("line=" + line);
                     var separatedLine = line.Split(","[0]);
-                    if (separatedLine.Length > index)
+                    //Debug.Log("line with lenght"+ separatedLine.Length + "=" + line);
+                    if (separatedLine.Length > 1)
                     {
+                        //Debug.Log("line added = ("+ separatedLine[index] + ")");
                         numbers.Add(separatedLine[index]);
+                    } else
+                    {
+                        //Debug.Log("line ignored");
                     }
                 }
             }

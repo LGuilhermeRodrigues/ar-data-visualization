@@ -25,8 +25,7 @@ namespace MyNameSpace {
 
         private int dimNum;
 
-        private IDictionary<string, string> metrics = new Dictionary<string, string>();
-        private IDictionary<string, string> dims = new Dictionary<string, string>();
+        
 
         private string[] dimensions;
 
@@ -35,6 +34,10 @@ namespace MyNameSpace {
         // Start is called before the first frame update
         public void Load(string imageTargetName)
         {
+
+            IDictionary<string, string> metrics = new Dictionary<string, string>();
+            IDictionary<string, string> dims = new Dictionary<string, string>();
+
             if (isLoaded == false)
             {
                 isLoaded = true;
