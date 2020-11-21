@@ -42,7 +42,7 @@ namespace MyNameSpace {
                 bool somethingMissing = false;
 
                 chartName = "Bars";
-                datasource = "homes.csv";
+                datasource = "homes";
                 PlayerPrefs.SetString(imageTargetName + "_chartName", chartName);
                 PlayerPrefs.SetString(imageTargetName + "_datasource", datasource);
 
@@ -77,6 +77,10 @@ namespace MyNameSpace {
                 for (int i = 0; i < metricNum; i++)
                 {
                     // check misssing
+                    if(metrics.ContainsKey("metric" + i))
+                    {
+                        metrics.Remove("metric" + i);
+                    }
                     metrics.Add("metric"+i, "Sell");
                 }
 
@@ -173,7 +177,7 @@ namespace MyNameSpace {
 
 
             // metrics according to the datasource
-            if (PlayerPrefs.HasKey(imageTargetName + "_metric1"))
+            if (PlayerPrefs.HasKey(imageTargetName + "_metric0"))
             {
                 //metrics[0] = PlayerPrefs.GetString(imageTargetName + "_metric1");
                 if (somethingMissing)
@@ -184,7 +188,7 @@ namespace MyNameSpace {
             else
             {
                 //createOptions("Chart Name", getDatasources());
-                datasource = "papers.csv";
+                datasource = "papers";
                 createOption("Chart Name", datasource);
             }
         }
@@ -196,7 +200,7 @@ namespace MyNameSpace {
 
         private string[] getDatasources()
         {
-            string[] datsources = { "papers.csv" };
+            string[] datsources = { "papers" };
             return datsources;
         }
 

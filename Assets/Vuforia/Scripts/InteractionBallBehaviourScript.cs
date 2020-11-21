@@ -32,25 +32,51 @@ public class InteractionBallBehaviourScript : MonoBehaviour
             mesh.material.color = myColor;
             //other.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
         }
-        if (other.gameObject.name.Split(":"[0]).Length>1)
+        
+        if (other.gameObject.name.Contains("Deleter"))
         {
+            var targetName = other.gameObject.transform.parent.name.Substring(11).ToLower();
+            Debug.Log("marker "+ targetName+ " has been touched");
             Debug.Log(other.gameObject.name + " saved");
-            PlayerPrefs.SetString(other.gameObject.name.Split(":"[0])[0], other.gameObject.name.Split(":"[0])[1]);
+            PlayerPrefs.DeleteKey(targetName + "_chartName");
+            PlayerPrefs.DeleteKey(targetName + "_datasource");
+            PlayerPrefs.DeleteKey(targetName + "_dim0");
+            PlayerPrefs.DeleteKey(targetName + "_metric0");
             //Delete Everything
             ChartLoadScript loadScript = other.gameObject.transform.parent
                 .GetComponentInChildren<ChartLoadScript>(true);
             loadScript.isLoaded = false;
             foreach (Transform child in other.gameObject.transform.parent.transform)
             {
-                if(!string.Equals(child.gameObject.name, "GameObject"))
+                if (!string.Equals(child.gameObject.name, "GameObject"))
                 {
-                    Destroy(child.gameObject);
+                    if(!string.Equals(child.gameObject.name, "Deleter"))
+                    {
+                        Destroy(child.gameObject);
+                    }
                 }
             }
-        }
-        if (other.gameObject.name.Contains("ImageTarget"))
+        } else
         {
-            Debug.Log("A marker has been touched");
+            if (other.gameObject.name.Split(":"[0]).Length > 1)
+            {
+                Debug.Log(other.gameObject.name + " saved");
+                PlayerPrefs.SetString(other.gameObject.name.Split(":"[0])[0], other.gameObject.name.Split(":"[0])[1]);
+                //Delete Everything
+                ChartLoadScript loadScript = other.gameObject.transform.parent
+                    .GetComponentInChildren<ChartLoadScript>(true);
+                loadScript.isLoaded = false;
+                foreach (Transform child in other.gameObject.transform.parent.transform)
+                {
+                    if (!string.Equals(child.gameObject.name, "GameObject"))
+                    {
+                        if (!string.Equals(child.gameObject.name, "Deleter"))
+                        {
+                            Destroy(child.gameObject);
+                        }
+                    }
+                }
+            }
         }
     }
 

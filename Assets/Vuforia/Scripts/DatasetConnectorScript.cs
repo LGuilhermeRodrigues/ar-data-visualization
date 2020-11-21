@@ -9,15 +9,19 @@ namespace DatasetSpace
     public class DatasetConnectorScript : MonoBehaviour
     {
 
-        
 
-        void GetTables()
+
+        public List<string> GetTables()
         {
+            var tables = new List<string>();
             Debug.Log("oioioioiosi");
+            tables.Add("homes");
+            return tables;
         }
 
         public List<string> GetLines(string tableName, string colName)
         {
+            tableName = tableName + ".csv";
             bool firstLine = true;
             int index = 0;
             var numbers = new List<string>();
