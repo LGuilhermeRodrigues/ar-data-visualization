@@ -82,7 +82,7 @@ namespace RenderSpace
                 var y = uniqueHeights[i];
                 gObject.transform.localPosition = new Vector3(xStart + i * xStepSize, y, 0.0f);
                 gObject.transform.localScale = new Vector3(commonScale.x, y, commonScale.z);
-                gObject.name = uniqueValues[i];
+                gObject.name = uniqueValues[i]+"-"+aggMetrics[i];
 
                 GameObject dimName = new GameObject(uniqueValues[i] + "_label");
                 dimName.transform.parent = parent.transform;

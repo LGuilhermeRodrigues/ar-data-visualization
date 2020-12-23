@@ -128,11 +128,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             var rendererComponents = mTrackableBehaviour.GetComponentsInChildren<Renderer>(true);
             var colliderComponents = mTrackableBehaviour.GetComponentsInChildren<Collider>(true);
             var canvasComponents = mTrackableBehaviour.GetComponentsInChildren<Canvas>(true);
-            if (string.Equals(mTrackableBehaviour.TrackableName, "stone"))
-            {
-
-                // Disable rendering:
-                foreach (var component in rendererComponents)
+            
+            // Disable rendering:
+            foreach (var component in rendererComponents)
                 component.enabled = false;
 
             // Disable colliders:
@@ -142,7 +140,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             // Disable canvas':
             foreach (var component in canvasComponents)
                 component.enabled = false;
-            }
+            
         }
     }
 
