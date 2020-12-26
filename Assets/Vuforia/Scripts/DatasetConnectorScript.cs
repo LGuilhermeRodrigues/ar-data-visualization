@@ -14,9 +14,18 @@ namespace DatasetSpace
         public List<string> GetTables()
         {
             var tables = new List<string>();
-            Debug.Log("oioioioiosi");
+            Debug.Log("available tables = [homes, covid]");
             tables.Add("homes");
+            tables.Add("covid");
             return tables;
+        }
+
+        public List<string> GetCharts()
+        {
+            var charts = new List<string>();
+            Debug.Log("available charts = [Bars]");
+            charts.Add("Bar Chart");
+            return charts;
         }
 
         public List<string> GetLines(string tableName, string colName)

@@ -36,11 +36,11 @@ public class InteractionBallBehaviourScript : MonoBehaviour
             mesh.material.color = myColor;
             //other.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
         }
-        
+        var targetName = other.gameObject.transform.parent.name.Substring(11).ToLower();
         // if its the red ball
         if (other.gameObject.name.Contains("Deleter"))
         {
-            var targetName = other.gameObject.transform.parent.name.Substring(11).ToLower();
+            
             Debug.Log("marker "+ targetName+ " has been touched");
             Debug.Log(other.gameObject.name + " saved");
             PlayerPrefs.DeleteKey(targetName + "_chartName");
@@ -61,6 +61,7 @@ public class InteractionBallBehaviourScript : MonoBehaviour
                     }
                 }
             }
+            StartCoroutine(LoadAfterTime(3, loadScript, targetName));
         } else
         {
             // if its a choosing option
@@ -82,6 +83,7 @@ public class InteractionBallBehaviourScript : MonoBehaviour
                         }
                     }
                 }
+                StartCoroutine(LoadAfterTime(3, loadScript, targetName));
             } else { // if its a bar
                 if (other.gameObject.name.Split("_"[0]).Length == 1)
                 {
@@ -102,6 +104,14 @@ public class InteractionBallBehaviourScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator LoadAfterTime(float time, ChartLoadScript loadScript, string imageTargetName)
+    {
+        yield return new WaitForSeconds(time);
+
+        // Code to execute after the delay
+        loadScript.Load(imageTargetName);
     }
 
     private void OnTriggerExit(Collider other)

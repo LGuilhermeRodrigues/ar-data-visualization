@@ -40,8 +40,6 @@ namespace MyNameSpace {
 
             if (isLoaded == false)
             {
-                isLoaded = true;
-
                 bool somethingMissing = false;
 
                 chartName = "Bars";
@@ -77,14 +75,33 @@ namespace MyNameSpace {
                     dimNum = 1;
                 }
 
+                string metricNeeded;
                 for (int i = 0; i < metricNum; i++)
                 {
-                    // check misssing
-                    if(metrics.ContainsKey("metric" + i))
+                    metricNeeded = imageTargetName + "_metric" + i;
+                    if (!PlayerPrefs.HasKey(metricNeeded))
                     {
-                        metrics.Remove("metric" + i);
+                        somethingMissing = true;
+                        Debug.Log("_metric " + i + " is missing on chart");
+                        var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
+                        var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
+                        List<string> dimNames = datasetScript.GetSchema(datasource);
+                        List<string> storedNames = dimNames
+                            .Select(t => imageTargetName + "_metric" + i + ":" + t).ToList();
+
+                        renderScript.renderChoice(parentObject, storedNames, "Choose Metric " + (i + 1));
                     }
-                    metrics.Add("metric"+i, "Sell");
+                    else
+                    {
+                        Debug.Log("PlayerPrefs found  " + imageTargetName + "_metric " + i + " is " + PlayerPrefs.GetString(metricNeeded));
+                        metrics.Add("metric" + i, PlayerPrefs.GetString(metricNeeded));
+                    }
+                }
+
+                if (somethingMissing)
+                {
+                    Debug.Log("Metric is missing on chart");
+                    return;
                 }
 
                 string dimNeeded;
@@ -113,12 +130,11 @@ namespace MyNameSpace {
                 if (somethingMissing)
                 {
                     Debug.Log("Somethin is missing on chart");
-                    //showOptions(imageTargetName, somethingMissing);
-                    
                 }
                 else
                 {
                     renderChart(datasource,chartName,metrics,dims);
+                    isLoaded = true;
                 }
             } 
         }
