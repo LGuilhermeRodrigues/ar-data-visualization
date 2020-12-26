@@ -101,7 +101,7 @@ namespace MyNameSpace {
                         List<string> storedNames = dimNames
                             .Select(t => imageTargetName + "_dim" + i + ":" + t).ToList();
 
-                        renderScript.renderChoice(parentObject, storedNames);
+                        renderScript.renderChoice(parentObject, storedNames, "Choose Dimension "+(i+1));
                     }else
                     {
                         Debug.Log("PlayerPrefs found  "+imageTargetName+"_dim " + i + " is "+ PlayerPrefs.GetString(dimNeeded));
@@ -136,7 +136,10 @@ namespace MyNameSpace {
                 var list1 = datasetScript.GetLines(datasource, dims["dim0"]);
                 //var d = extractValues(datasource, metrics["metric0"]);
                 var list2 = datasetScript.GetLines(datasource, metrics["metric0"]);
-                renderScript.renderBars(parentObject,list1, list2);
+                var axes = new List<string>();
+                axes.Add(metrics["metric0"]);
+                axes.Add(dims["dim0"]);
+                renderScript.renderBars(parentObject,list1, list2, axes);
             }
         }
 

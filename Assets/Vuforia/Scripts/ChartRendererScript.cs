@@ -26,7 +26,7 @@ namespace RenderSpace
 
         }
 
-        public void renderBars(GameObject parent, List<string> dims, List<string> metricStr)
+        public void renderBars(GameObject parent, List<string> dims, List<string> metricStr, List<string> axes)
         {
             List<float> metric = new List<float>();
             for (int i = 0; i < metricStr.Count; i++)
@@ -94,9 +94,33 @@ namespace RenderSpace
                 dimName.transform.localPosition = new Vector3(xStart + i * xStepSize, textScale.y, -commonScale.z);
             }
             
+            // Rendering X axis
+            
+            GameObject axisX = new GameObject("axisX_label");
+            axisX.transform.parent = parent.transform;
+            TextMesh axisXtext = axisX.AddComponent<TextMesh>();
+            axisXtext.text = axes[1];
+            axisXtext.anchor = TextAnchor.MiddleCenter;
+            axisX.transform.rotation = parent.transform.rotation;
+            axisX.transform.localScale = textScale;
+            axisX.transform.localPosition = new Vector3(0.0f, textScale.y, -commonScale.z*1.5f);
+
+            // Rendering Y axis
+
+            var AxisLabelYHeight = rangeY;
+
+            GameObject axisY = new GameObject("axisY_label");
+            axisY.transform.parent = parent.transform;
+            TextMesh axisYtext = axisY.AddComponent<TextMesh>();
+            axisYtext.text = axes[0];
+            axisYtext.anchor = TextAnchor.MiddleCenter;
+            axisY.transform.rotation = parent.transform.rotation;
+            axisY.transform.localScale = textScale;
+            axisY.transform.localPosition = new Vector3(xStart - commonScale.x , AxisLabelYHeight, -commonScale.z * 1.5f);
+
         }
 
-        public void renderChoice(GameObject parent, List<string> list1)
+        public void renderChoice(GameObject parent, List<string> list1, string optionName)
         {
             List<string> uniqueValues = list1.Distinct().ToList();
             float xStepSize = rangeX / uniqueValues.Count;
@@ -120,6 +144,17 @@ namespace RenderSpace
                 dimName.transform.localScale = textScale;
                 dimName.transform.localPosition = new Vector3(xStart + i * xStepSize, textScale.y, -commonScale.z);
             }
+
+            // Rendering X axis
+
+            GameObject axisX = new GameObject("axisX_label");
+            axisX.transform.parent = parent.transform;
+            TextMesh axisXtext = axisX.AddComponent<TextMesh>();
+            axisXtext.text = optionName;
+            axisXtext.anchor = TextAnchor.MiddleCenter;
+            axisX.transform.rotation = parent.transform.rotation;
+            axisX.transform.localScale = textScale;
+            axisX.transform.localPosition = new Vector3(0.0f, textScale.y, -commonScale.z * 1.5f);
 
         }
     }
