@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace DatasetSpace
 {
@@ -23,8 +24,9 @@ namespace DatasetSpace
         public List<string> GetCharts()
         {
             var charts = new List<string>();
-            Debug.Log("available charts = [Bars]");
-            charts.Add("Bar Chart");
+            Debug.Log("available charts = [Bars, Bars 3D]");
+            charts.Add("Bars");
+            charts.Add("Bars 3D");
             return charts;
         }
 
@@ -47,6 +49,20 @@ namespace DatasetSpace
                 }
                 else
                 {
+                    Debug.Log("value line=" + line);
+                    // null csv values will be zero
+                    if (line.Split(",,"[0]).Length > 1)
+                    {
+                        Regex pattern = new Regex("[,,]");
+                        pattern.Replace(line, ",0,");
+                        Debug.Log("null value found");
+                    }
+                    if (line.EndsWith(","))
+                    {
+                        line = line + "0";
+                        Debug.Log("null value found");
+                    }
+
                     var separatedLine = line.Split(","[0]);
                     //Debug.Log("line with lenght"+ separatedLine.Length + "=" + line);
                     if (separatedLine.Length > 1)

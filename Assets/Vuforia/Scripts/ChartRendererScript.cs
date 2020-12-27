@@ -28,16 +28,23 @@ namespace RenderSpace
 
         public void renderBars(GameObject parent, List<string> dims, List<string> metricStr, List<string> axes)
         {
+            Debug.Log("dims and metric lines total=" + metricStr.Count + " and "+dims.Count);
             List<float> metric = new List<float>();
             for (int i = 0; i < metricStr.Count; i++)
             {
+                if (metricStr[i].Equals(""))
+                {
+                    metricStr[i] = "0";
+                    Debug.Log("Empty value detected");
+                }
                 //Debug.Log("metricStr["+i+"]=" + metricStr[i]);
                 if (float.TryParse(metricStr[i], out float n))
                 {
                     metric.Add(float.Parse(metricStr[i]));
                 } else
                 {
-                    Debug.Log("error parsing a metric float value");
+                    Debug.Log("error parsing a metric float value ("+ metricStr[i] + ";i="+i+")");
+                    metric.Add(float.Parse("0"));
                 }
                 
             }

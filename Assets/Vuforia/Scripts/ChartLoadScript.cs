@@ -41,36 +41,63 @@ namespace MyNameSpace {
             if (isLoaded == false)
             {
                 bool somethingMissing = false;
-
-                chartName = "Bars";
-                datasource = "homes";
-                PlayerPrefs.SetString(imageTargetName + "_chartName", chartName);
-                PlayerPrefs.SetString(imageTargetName + "_datasource", datasource);
-
-                string[] keys = { imageTargetName+"_chartName", imageTargetName + "_datasource"};
-
-                foreach (string k in keys)
+                               
+                string datasourceNeeded = imageTargetName + "_datasource";
+                if (!PlayerPrefs.HasKey(datasourceNeeded))
                 {
-                    if (!PlayerPrefs.HasKey(k))
-                    {
-                        somethingMissing = true;
-                    }
-                }
+                    somethingMissing = true;
+                    Debug.Log("_datasorce is missing on chart");
+                    var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
+                    var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
+                    List<string> datasourceNames = datasetScript.GetTables();
+                    List<string> storedNames = datasourceNames
+                        .Select(t => imageTargetName + "_datasource:" + t).ToList();
 
-                // Choose the Tipe of the Chart and The Table
-                if (somethingMissing)
-                {
-                    //showOptions(imageTargetName, somethingMissing);
+                    renderScript.renderChoice(parentObject, storedNames, "Choose Datasource");
                 }
                 else
                 {
-                    //renderChart();
+                    Debug.Log("PlayerPrefs found  " + imageTargetName + "_datasource is " + PlayerPrefs.GetString(datasourceNeeded));
+                    datasource = PlayerPrefs.GetString(datasourceNeeded);
+                }
+                if (somethingMissing)
+                {
+                    Debug.Log("Datasource is missing on chart");
+                    return;
                 }
 
-                
+
+                string chartNeeded = imageTargetName + "_chartName";
+                if (!PlayerPrefs.HasKey(chartNeeded))
+                {
+                    somethingMissing = true;
+                    Debug.Log("_chartName is missing on chart");
+                    var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
+                    var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
+                    List<string> chartNames = datasetScript.GetCharts();
+                    List<string> storedNames = chartNames
+                        .Select(t => imageTargetName + "_chartName:" + t).ToList();
+
+                    renderScript.renderChoice(parentObject, storedNames, "Choose Chart Type");
+                }
+                else
+                {
+                    Debug.Log("PlayerPrefs found  " + imageTargetName + "_chartName is " + PlayerPrefs.GetString(chartNeeded));
+                    chartName = PlayerPrefs.GetString(chartNeeded);
+                }
+                if (somethingMissing)
+                {
+                    Debug.Log("Chart is missing on chart");
+                    return;
+                }
+
 
                 if (string.Equals(chartName, "Bars"))
                 {
+                    metricNum = 1;
+                    dimNum = 1;
+                } else
+                { // not implemented 3dBars
                     metricNum = 1;
                     dimNum = 1;
                 }
@@ -85,8 +112,8 @@ namespace MyNameSpace {
                         Debug.Log("_metric " + i + " is missing on chart");
                         var datasetScript = (DatasetConnectorScript)FindObjectOfType(typeof(DatasetConnectorScript));
                         var renderScript = (ChartRendererScript)FindObjectOfType(typeof(ChartRendererScript));
-                        List<string> dimNames = datasetScript.GetSchema(datasource);
-                        List<string> storedNames = dimNames
+                        List<string> metricNames = datasetScript.GetSchema(datasource);
+                        List<string> storedNames = metricNames
                             .Select(t => imageTargetName + "_metric" + i + ":" + t).ToList();
 
                         renderScript.renderChoice(parentObject, storedNames, "Choose Metric " + (i + 1));
