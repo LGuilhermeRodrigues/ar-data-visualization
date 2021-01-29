@@ -1,4 +1,4 @@
-# Visualization Visualization in Augmented Reality
+# Information Visualization in Augmented Reality
 
 This is a Unity 2018.4.28f1 Project
 
